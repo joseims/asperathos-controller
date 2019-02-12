@@ -20,7 +20,7 @@ import sys
 try:
     # Conf reading
     config = ConfigParser.RawConfigParser()
-    config.read('./controller.cfg')
+    config.read('./etc/controller.cfg')
     
     """ General configuration """
     host = config.get("general", "host")
