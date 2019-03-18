@@ -54,8 +54,9 @@ class OpenstackGenericMetricSource(MetricSource):
             ref_value = self._get_elapsed_time() / self.expected_time
             measurement_value = self._get_metric_value_from_log_line(last_log)
             error = measurement_value - ref_value
-            self.logger.log("ref-value:%f|measurement-value:%f|error:%f" % (ref_value,
-                                                                            measurement_value, error))
+            self.logger.log(
+                "ref-value:%f|measurement-value:%f|error:%f" %
+                (ref_value, measurement_value, error))
             return 100 * error
         # Flag that checks if the log capture is ended
         elif '[END]' in last_log:
@@ -63,9 +64,8 @@ class OpenstackGenericMetricSource(MetricSource):
 
     def _monitoring_application(self):
         try:
-            result = SSHUtils().run_and_get_result("sudo tail -1 %s" % self.log_path,
-                                                    self.host_username, self.host_ip,
-                                                    self.keypair_path)
+            result = SSHUtils().run_and_get_result("sudo tail -1 %s" %
+                                                   self.log_path, self.host_username, self.host_ip, self.keypair_path)
             timestamp = datetime.datetime.fromtimestamp(time.time())
             return timestamp, self._extract_metric_from_log(result)
 

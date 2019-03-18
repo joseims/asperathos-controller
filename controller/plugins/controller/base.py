@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import ConfigParser
 
 from abc import ABCMeta
 from abc import abstractmethod
@@ -24,6 +23,8 @@ The Controller is the component responsible for, based on metrics of infrastruct
 health such as application progress and CPU usage, taking actions to ensure compliance with
 quality of service levels.
 '''
+
+
 class Controller:
     __metaclass__ = ABCMeta
 

@@ -27,7 +27,7 @@ class TestRemoteKVM(unittest.TestCase):
         self.iops_reference = 50
         self.bs_reference = 10000000
         self.remote_kvm = RemoteKVM(self.ssh_utils, self.compute_nodes_key,
-                                     self.iops_reference, self.bs_reference)
+                                    self.iops_reference, self.bs_reference)
         self.cap = 56
         self.host_ip = "vm-ip"
         self.vm_id = "vm-id"
@@ -46,16 +46,21 @@ class TestRemoteKVM(unittest.TestCase):
             " --set vcpu_quota=$(( %s * `virsh schedinfo %s | awk 'FNR == 3 {print $3}'`/100 ))" \
             " > /dev/null" % (self.vm_id, self.cap, self.vm_id)
 
-        self.ssh_utils.run_command.assert_called_once_with(command, "root",
-                                                           self.host_ip, self.compute_nodes_key)
+        self.ssh_utils.run_command.assert_called_once_with(
+            command, "root", self.host_ip, self.compute_nodes_key)
 
     def test_change_cpu_quota_negative_cap_value(self):
-        self.assertRaises(Exception, self.remote_kvm.change_vcpu_quota, self.host_ip,
-                          self.vm_id, -10, self.compute_nodes_key)
+        self.assertRaises(Exception, self.remote_kvm.change_vcpu_quota,
+                          self.host_ip, self.vm_id, -10, self.compute_nodes_key)
 
     def test_change_cpu_quota_too_high_cap_value(self):
-        self.assertRaises(Exception, self.remote_kvm.change_vcpu_quota,
-                          self.host_ip, self.vm_id, 100 + 20, self.compute_nodes_key)
+        self.assertRaises(
+            Exception,
+            self.remote_kvm.change_vcpu_quota,
+            self.host_ip,
+            self.vm_id,
+            100 + 20,
+            self.compute_nodes_key)
 
     #
     # change_io_quota
@@ -73,16 +78,21 @@ class TestRemoteKVM(unittest.TestCase):
 
         self.remote_kvm.change_io_quota(self.host_ip, self.vm_id, self.cap)
 
-        self.ssh_utils.run_command.assert_called_once_with(command_set_io_quota, "root",
-                                                           self.host_ip, self.compute_nodes_key)
+        self.ssh_utils.run_command.assert_called_once_with(
+            command_set_io_quota, "root", self.host_ip, self.compute_nodes_key)
 
     def test_change_io_quota_negative_cap_value(self):
-        self.assertRaises(Exception, self.remote_kvm.change_io_quota, self.host_ip, self.vm_id,
-                          -10, self.compute_nodes_key)
+        self.assertRaises(Exception, self.remote_kvm.change_io_quota,
+                          self.host_ip, self.vm_id, -10, self.compute_nodes_key)
 
     def test_change_io_quota_too_high_cap_value(self):
-        self.assertRaises(Exception, self.remote_kvm.change_io_quota, self.host_ip,
-                          self.vm_id, 100 + 20, self.compute_nodes_key)
+        self.assertRaises(
+            Exception,
+            self.remote_kvm.change_io_quota,
+            self.host_ip,
+            self.vm_id,
+            100 + 20,
+            self.compute_nodes_key)
 
     def test_get_allocated_resources_success(self):
         self.ssh_utils.run_and_get_result = MagicMock(return_value="56")
@@ -94,8 +104,8 @@ class TestRemoteKVM(unittest.TestCase):
 
         command = "virsh schedinfo %s" \
             " | awk '{if(NR==3){period=$3} if(NR==4){print 100*$3/period}}'" % (self.vm_id)
-        self.ssh_utils.run_and_get_result.assert_called_once_with(command, "root",
-                                                                  self.host_ip, self.compute_nodes_key)
+        self.ssh_utils.run_and_get_result.assert_called_once_with(
+            command, "root", self.host_ip, self.compute_nodes_key)
 
     #
     # get_cpu_quota
@@ -111,8 +121,8 @@ class TestRemoteKVM(unittest.TestCase):
 
         command = "virsh schedinfo %s" \
             " | awk '{if(NR==3){period=$3} if(NR==4){print 100*$3/period}}'" % (self.vm_id)
-        self.ssh_utils.run_and_get_result.assert_called_once_with(command, "root",
-                                                                  self.host_ip, self.compute_nodes_key)
+        self.ssh_utils.run_and_get_result.assert_called_once_with(
+            command, "root", self.host_ip, self.compute_nodes_key)
 
     def test_get_allocated_resources_ssh_returns_empty_string(self):
         self.ssh_utils.run_and_get_result = MagicMock(return_value="")
@@ -143,14 +153,18 @@ class TestRemoteKVM(unittest.TestCase):
 
         self.assertEqual(quota, 100 * float(self.io_quota) /
                          self.iops_reference)
-        self.ssh_utils.run_and_get_result.assert_any_call(command_get_io_quota, "root",
-                                                          self.host_ip, self.compute_nodes_key)
+        self.ssh_utils.run_and_get_result.assert_any_call(
+            command_get_io_quota, "root", self.host_ip, self.compute_nodes_key)
 
     def test_get_io_quota_ssh_returns_empty_string(self):
         self.ssh_utils.run_and_get_result = MagicMock(return_value="")
 
-        self.assertRaises(Exception, self.remote_kvm.get_io_quota, self.host_ip, self.vm_id,
-                          self.compute_nodes_key)
+        self.assertRaises(
+            Exception,
+            self.remote_kvm.get_io_quota,
+            self.host_ip,
+            self.vm_id,
+            self.compute_nodes_key)
 
 
 if __name__ == "__main__":

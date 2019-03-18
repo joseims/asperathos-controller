@@ -18,7 +18,6 @@ import time
 
 from mock.mock import MagicMock
 #from service.api.controller.main_controller import Main_Controller
-from controller.plugins.controller.single.plugin import SingleApplicationController
 
 
 class TestMainController(unittest.TestCase):
@@ -70,9 +69,10 @@ class TestMainController(unittest.TestCase):
         self.main_controller = Main_Controller()
 
     def controllers(self, name, application_id, parameters):
-        return {self.application_id_0: self.controller, self.application_id_1: self.controller_2}[application_id]
+        return {self.application_id_0: self.controller,
+                self.application_id_1: self.controller_2}[application_id]
 
-    @unittest.skip("Main controller not exists")    
+    @unittest.skip("Main controller not exists")
     def test_start_and_stop_scaling_1_application(self):
         #
         # Starting scaling
@@ -99,7 +99,8 @@ class TestMainController(unittest.TestCase):
         self.controller.start_application_scaling.assert_called_once()
         self.assertEquals(
             1, len(self.main_controller.controller_thread_pool.items()))
-        self.assertTrue(self.application_id_0 in self.main_controller.controller_thread_pool.keys())
+        self.assertTrue(
+            self.application_id_0 in self.main_controller.controller_thread_pool.keys())
         self.assertEquals(
             self.controller, self.main_controller.controller_thread_pool[self.application_id_0])
 
@@ -151,7 +152,8 @@ class TestMainController(unittest.TestCase):
         self.controller.start_application_scaling.assert_called_once()
         self.assertEquals(
             1, len(self.main_controller.controller_thread_pool.items()))
-        self.assertTrue(self.application_id_0 in self.main_controller.controller_thread_pool.keys())
+        self.assertTrue(
+            self.application_id_0 in self.main_controller.controller_thread_pool.keys())
         self.assertEquals(
             self.controller, self.main_controller.controller_thread_pool[self.application_id_0])
 
@@ -169,10 +171,12 @@ class TestMainController(unittest.TestCase):
         # The controller is started and added to the pool
         self.assertEquals(
             2, len(self.main_controller.controller_thread_pool.items()))
-        self.assertTrue(self.application_id_0 in self.main_controller.controller_thread_pool.keys())
+        self.assertTrue(
+            self.application_id_0 in self.main_controller.controller_thread_pool.keys())
         self.assertEquals(
             self.controller, self.main_controller.controller_thread_pool[self.application_id_0])
-        self.assertTrue(self.application_id_1 in self.main_controller.controller_thread_pool.keys())
+        self.assertTrue(
+            self.application_id_1 in self.main_controller.controller_thread_pool.keys())
         self.assertEquals(
             self.controller_2, self.main_controller.controller_thread_pool[self.application_id_1])
 
@@ -189,7 +193,8 @@ class TestMainController(unittest.TestCase):
         self.controller.stop_application_scaling.assert_called_once()
         self.assertEquals(
             1, len(self.main_controller.controller_thread_pool.items()))
-        self.assertTrue(self.application_id_1 in self.main_controller.controller_thread_pool.keys())
+        self.assertTrue(
+            self.application_id_1 in self.main_controller.controller_thread_pool.keys())
         self.assertEquals(
             self.controller_2, self.main_controller.controller_thread_pool[self.application_id_1])
 

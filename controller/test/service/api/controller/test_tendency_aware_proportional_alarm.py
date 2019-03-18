@@ -70,13 +70,18 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm, #self.authorization_data,
-                                     self.default_io_cap)
+        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
+                                    self.default_io_cap)
 
-        self.alarm = TendencyAwareProportionalAlarm(self.actuator, self.metric_source,
-                                                       self.trigger_down, self.trigger_up,
-                                                       self.min_cap, self.max_cap, self.actuation_size,
-                                                       self.metric_round)
+        self.alarm = TendencyAwareProportionalAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.actuation_size,
+            self.metric_round)
 
         self.timestamps = [self.timestamp_1, self.timestamp_2,
                            self.timestamp_3, self.timestamp_4]
@@ -105,8 +110,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_0, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(self.alarm.ERROR_METRIC_NAME,
-                                                                 {"application_id": self.application_id_0})
+        self.metric_source.get_most_recent_value.assert_any_call(
+            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_0})
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
@@ -120,8 +125,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_0, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(self.alarm.ERROR_METRIC_NAME,
-                                                                 {"application_id": self.application_id_0})
+        self.metric_source.get_most_recent_value.assert_any_call(
+            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_0})
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
@@ -138,8 +143,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_1, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(self.alarm.ERROR_METRIC_NAME,
-                                                                 {"application_id": self.application_id_1})
+        self.metric_source.get_most_recent_value.assert_any_call(
+            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_1})
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
@@ -153,8 +158,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_1, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(self.alarm.ERROR_METRIC_NAME,
-                                                                 {"application_id": self.application_id_1})
+        self.metric_source.get_most_recent_value.assert_any_call(
+            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_1})
 
         self.actuator.get_allocated_resources_to_cluster.assert_any_call(
             self.instances)
@@ -176,8 +181,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_2, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(self.alarm.ERROR_METRIC_NAME,
-                                                                 {"application_id": self.application_id_2})
+        self.metric_source.get_most_recent_value.assert_any_call(
+            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_2})
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
@@ -191,8 +196,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_2, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(self.alarm.ERROR_METRIC_NAME,
-                                                                 {"application_id": self.application_id_2})
+        self.metric_source.get_most_recent_value.assert_any_call(
+            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_2})
 
         self.actuator.get_allocated_resources_to_cluster.assert_any_call(
             self.instances)

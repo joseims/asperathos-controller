@@ -46,7 +46,8 @@ class KubejobsController(Controller):
         # The metric source plugin name
         self.metric_source_type = scaling_parameters["metric_source"]
 
-        # We use a lock here to prevent race conditions when stopping the controller
+        # We use a lock here to prevent race conditions when stopping the
+        # controller
         self.running = True
         self.running_lock = threading.RLock()
 
@@ -54,13 +55,14 @@ class KubejobsController(Controller):
         metric_source = MetricSourceBuilder().get_metric_source(
             self.metric_source_type, parameters)
         # Gets a new actuator plugin using the given name
-        actuator = ActuatorBuilder().get_actuator(self.actuator_type, 
+        actuator = ActuatorBuilder().get_actuator(self.actuator_type,
                                                   parameters=parameters)
-        # The alarm here is responsible for deciding whether to scale up or down, or even do nothing
-        self.alarm = KubeJobs(actuator, metric_source, 
-                            self.trigger_down, self.trigger_up,
-                            self.min_cap, self.max_cap, self.actuation_size,
-                            application_id)
+        # The alarm here is responsible for deciding whether to scale up or
+        # down, or even do nothing
+        self.alarm = KubeJobs(actuator, metric_source,
+                              self.trigger_down, self.trigger_up,
+                              self.min_cap, self.max_cap, self.actuation_size,
+                              application_id)
 
     def start_application_scaling(self):
         run = True

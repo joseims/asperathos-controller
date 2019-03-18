@@ -78,15 +78,16 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,# self.authorization_data,
-                                     self.default_io_cap)
+        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
+                                    self.default_io_cap)
 
         self.proportional_factor = 1.5
         self.derivative_factor = 0.5
 
-        self.heuristic_options = {"heuristic_name": "error_proportional_derivative",
-                                  "proportional_factor": self.proportional_factor,
-                                  "derivative_factor": self.derivative_factor}
+        self.heuristic_options = {
+            "heuristic_name": "error_proportional_derivative",
+            "proportional_factor": self.proportional_factor,
+            "derivative_factor": self.derivative_factor}
 
         self.progress_error = {
             # CASE 1
@@ -139,10 +140,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
     '''
 
     def test_alarm_gets_metrics_and_scales_up_decreasing_error(self):
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 self.trigger_down, self.trigger_up, self.min_cap,
-                                                 self.max_cap, self.metric_round, self.heuristic_options,
-                                                 self.application_id_0, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_0,
+            self.instances)
 
         #
         # First call - there is no derivative effect - timestamp_1
@@ -171,8 +179,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 45
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -201,8 +209,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 25
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Third call - timestamp_3
@@ -231,8 +239,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 20
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -251,10 +259,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # Derivative effect = 0
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 self.trigger_down, self.trigger_up, self.min_cap,
-                                                 self.max_cap, self.metric_round, self.heuristic_options,
-                                                 self.application_id_1, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_1,
+            self.instances)
 
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
@@ -277,8 +292,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 45
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -307,8 +322,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 65
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Third call - timestamp_3
@@ -337,8 +352,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 90
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -357,10 +372,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # Derivative effect = 0
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 self.trigger_down, self.trigger_up, self.min_cap,
-                                                 self.max_cap, self.metric_round, self.heuristic_options,
-                                                 self.application_id_2, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_2,
+            self.instances)
 
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
@@ -383,8 +405,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 45
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -413,8 +435,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 25
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Third call - timestamp_3
@@ -443,8 +465,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 20
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -463,10 +485,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # Derivative effect = 0
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 self.trigger_down, self.trigger_up, self.min_cap,
-                                                 self.max_cap, self.metric_round, self.heuristic_options,
-                                                 self.application_id_3, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_3,
+            self.instances)
 
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
@@ -489,8 +518,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 45
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -519,8 +548,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 65
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Third call - timestamp_3
@@ -549,8 +578,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 90
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -566,10 +595,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # First call - there is no derivative effect - timestamp_1
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 self.trigger_down, self.trigger_up, self.min_cap,
-                                                 self.max_cap, self.metric_round, self.heuristic_options,
-                                                 self.application_id_4, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_4,
+            self.instances)
 
         self.metric_source.get_most_recent_value = MagicMock()
         self.metric_source.get_most_recent_value.side_effect = self.metrics
@@ -591,8 +627,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.min_cap
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -619,8 +655,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.min_cap
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -636,10 +672,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # First call - there is no derivative effect - timestamp_1
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 self.trigger_down, self.trigger_up, self.min_cap,
-                                                 self.max_cap, self.metric_round, self.heuristic_options,
-                                                 self.application_id_5, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            self.trigger_down,
+            self.trigger_up,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_5,
+            self.instances)
 
         self.metric_source.get_most_recent_value = MagicMock()
         self.metric_source.get_most_recent_value.side_effect = self.metrics
@@ -661,8 +704,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.max_cap
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -689,8 +732,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.max_cap
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -708,9 +751,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # Derivative effect = 0
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 0, 0, self.min_cap, self.max_cap, self.metric_round,
-                                                 self.heuristic_options, self.application_id_6, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            0,
+            0,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_6,
+            self.instances)
 
         self.metric_source.get_most_recent_value = MagicMock()
         self.metric_source.get_most_recent_value.side_effect = self.metrics
@@ -732,8 +783,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 45
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -762,8 +813,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 35
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Third call - timestamp_3
@@ -791,8 +842,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 55
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     '''
 
@@ -810,9 +861,17 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         # Derivative effect = 0
         #
 
-        self.alarm = ProportionalDerivativeAlarm(self.actuator, self.metric_source,
-                                                 0, 0, self.min_cap, self.max_cap, self.metric_round,
-                                                 self.heuristic_options, self.application_id_7, self.instances)
+        self.alarm = ProportionalDerivativeAlarm(
+            self.actuator,
+            self.metric_source,
+            0,
+            0,
+            self.min_cap,
+            self.max_cap,
+            self.metric_round,
+            self.heuristic_options,
+            self.application_id_7,
+            self.instances)
 
         self.metric_source.get_most_recent_value = MagicMock()
         self.metric_source.get_most_recent_value.side_effect = self.metrics
@@ -834,8 +893,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_up + 7.5
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Second call - timestamp_2
@@ -864,8 +923,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 0.5
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
         #
         # Third call - timestamp_3
@@ -893,8 +952,8 @@ class TestProportionalDerivativeAlarm(unittest.TestCase):
         new_cap = self.allocated_resources_scale_down - 4.5
 
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with({self.instance_name_1: new_cap,
-                                                                self.instance_name_2: new_cap})
+        self.actuator.adjust_resources.assert_called_once_with(
+            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
 
 if __name__ == "__main__":
