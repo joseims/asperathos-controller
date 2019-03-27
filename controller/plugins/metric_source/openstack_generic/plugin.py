@@ -45,7 +45,8 @@ class OpenstackGenericMetricSource(MetricSource):
         delay = time.time() - self.start_time
         return delay
 
-    # This is an auxiliary function to prepare and publish the metric. The point is to keep
+    # This is an auxiliary function to prepare and publish the metric.
+    # The point is to keep
     # monitoring_application as simple as possible.
     def _extract_metric_from_log(self, last_log):
         # Check if this log line contains a new metric measurement.
@@ -65,7 +66,10 @@ class OpenstackGenericMetricSource(MetricSource):
     def _monitoring_application(self):
         try:
             result = SSHUtils().run_and_get_result("sudo tail -1 %s" %
-                                                   self.log_path, self.host_username, self.host_ip, self.keypair_path)
+                                                   self.log_path,
+                                                   self.host_username,
+                                                   self.host_ip,
+                                                   self.keypair_path)
             timestamp = datetime.datetime.fromtimestamp(time.time())
             return timestamp, self._extract_metric_from_log(result)
 

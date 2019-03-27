@@ -16,6 +16,7 @@
 import threading
 import time
 
+from controller.exceptions.monasca import MetricNotFoundException
 from controller.plugins.actuator.builder import ActuatorBuilder
 from controller.plugins.metric_source.builder import MetricSourceBuilder
 from controller.plugins.controller.base import Controller

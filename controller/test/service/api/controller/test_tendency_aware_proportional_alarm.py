@@ -22,7 +22,8 @@ from controller.utils.locator.instance import InstanceLocator
 from controller.utils.ssh import SSHUtils
 from controller.utils.remote.kvm import RemoteKVM
 from controller.plugins.actuator.kvm.plugin import KVMActuator
-from controller.plugins.controller.tendency.alarm import TendencyAwareProportionalAlarm
+from controller.plugins.controller.tendency.alarm \
+    import TendencyAwareProportionalAlarm
 
 
 class TestTendencyAwareProportionalAlarm(unittest.TestCase):
@@ -59,7 +60,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         # self.bigsea_username = "username"
         # self.bigsea_password = "password"
         # self.authorization_url = "authorization_url"
-        # self.authorization_data = dict(authorization_url=self.authorization_url,
+        # self.authorization_data = dict(
+        #                                authorization_url=self.authorization_url,
         #                                bigsea_username=self.bigsea_username,
         #                                bigsea_password=self.bigsea_password)
 
@@ -70,7 +72,9 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
+        self.actuator = KVMActuator(self.instance_locator,
+                                    self.remote_kvm,
+                                    # self.authorization_data,
                                     self.default_io_cap)
 
         self.alarm = TendencyAwareProportionalAlarm(
@@ -102,7 +106,8 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
 
         # First call
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metric_values
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metric_values
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
             return_value=None)
         self.actuator.adjust_resources = MagicMock(return_value=None)
@@ -110,14 +115,17 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_0, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(
-            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_0})
+        self.metric_source.get_most_recent_value\
+            .assert_any_call(
+                             self.alarm.ERROR_METRIC_NAME,
+                             {"application_id": self.application_id_0})
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
         # Second call
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metric_values
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metric_values
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
             return_value=None)
         self.actuator.adjust_resources = MagicMock(return_value=None)
@@ -125,17 +133,21 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_0, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(
-            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_0})
+        self.metric_source.get_most_recent_value\
+            .assert_any_call(
+                             self.alarm.ERROR_METRIC_NAME,
+                             {"application_id": self.application_id_0})
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
     def test_case1(self):
         # Case 1
-        # progress is ok. application performance is worse. add more resources. how much?
+        # progress is ok. application performance is worse.
+        # add more resources. how much?
         # First call
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metric_values
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metric_values
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
             return_value=None)
         self.actuator.adjust_resources = MagicMock(return_value=None)
@@ -143,14 +155,18 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
         self.alarm.check_application_state(
             self.application_id_1, self.instances)
 
-        self.metric_source.get_most_recent_value.assert_any_call(
-            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_1})
+        self.metric_source.get_most_recent_value\
+            .assert_any_call(
+                             self.alarm.ERROR_METRIC_NAME, {
+                                "application_id": self.application_id_1
+                                })
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
         # Second call
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metric_values
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metric_values
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
             return_value=self.allocated_resources)
         self.actuator.adjust_resources = MagicMock(return_value=None)
@@ -159,7 +175,9 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
             self.application_id_1, self.instances)
 
         self.metric_source.get_most_recent_value.assert_any_call(
-            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_1})
+            self.alarm.ERROR_METRIC_NAME, {
+                "application_id": self.application_id_1
+                })
 
         self.actuator.get_allocated_resources_to_cluster.assert_any_call(
             self.instances)
@@ -170,10 +188,12 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
 
     def test_case2(self):
         # Case 2
-        # progress is ok. application performance is improving. remove resources. how much?
+        # progress is ok. application performance is improving.
+        # remove resources. how much?
         # First call
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metric_values
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metric_values
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
             return_value=None)
         self.actuator.adjust_resources = MagicMock(return_value=None)
@@ -182,13 +202,16 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
             self.application_id_2, self.instances)
 
         self.metric_source.get_most_recent_value.assert_any_call(
-            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_2})
+            self.alarm.ERROR_METRIC_NAME, {
+                "application_id": self.application_id_2
+                })
         self.actuator.get_allocated_resources_to_cluster.assert_not_called()
         self.actuator.adjust_resources.assert_not_called()
 
         # Second call
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metric_values
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metric_values
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
             return_value=self.allocated_resources)
         self.actuator.adjust_resources = MagicMock(return_value=None)
@@ -197,7 +220,9 @@ class TestTendencyAwareProportionalAlarm(unittest.TestCase):
             self.application_id_2, self.instances)
 
         self.metric_source.get_most_recent_value.assert_any_call(
-            self.alarm.ERROR_METRIC_NAME, {"application_id": self.application_id_2})
+            self.alarm.ERROR_METRIC_NAME, {
+                "application_id": self.application_id_2
+                })
 
         self.actuator.get_allocated_resources_to_cluster.assert_any_call(
             self.instances)

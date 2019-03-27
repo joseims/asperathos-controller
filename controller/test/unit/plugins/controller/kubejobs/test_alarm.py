@@ -111,7 +111,8 @@ class TestKubeJobs(unittest.TestCase):
         self.assertEqual(self.kubejobs1.actuator.get_number_of_replicas(), 10)
 
     """
-    Test that the function _get_progress_error returns the progress error correct.
+    Test that the function _get_progress_error returns the progress
+    error correct.
     """
 
     def test_get_progress_error(self):

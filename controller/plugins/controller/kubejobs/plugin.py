@@ -22,7 +22,8 @@ from controller.plugins.metric_source.builder import MetricSourceBuilder
 from controller.plugins.controller.kubejobs.alarm import KubeJobs
 from controller.utils.logger import ScalingLog
 
-# This class dictates the pace of the scaling process. It controls when Generic_Alarm
+# This class dictates the pace of the scaling process.
+# It controls when Generic_Alarm
 # is called to check application state and when is necessary to wait.
 
 

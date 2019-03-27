@@ -68,7 +68,8 @@ class TestPIDAlarm(unittest.TestCase):
         self.bigsea_username = "username"
         self.bigsea_password = "password"
         # self.authorization_url = "authorization_url"
-        # self.authorization_data = dict(authorization_url=self.authorization_url,
+        # self.authorization_data = dict(
+        #                                authorization_url=self.authorization_url,
         #                                bigsea_username=self.bigsea_username,
         #                                bigsea_password=self.bigsea_password)
 
@@ -79,7 +80,9 @@ class TestPIDAlarm(unittest.TestCase):
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
+        self.actuator = KVMActuator(self.instance_locator,
+                                    self.remote_kvm,
+                                    # self.authorization_data,
                                     self.default_io_cap)
 
         self.proportional_factor = 1.5
@@ -94,44 +97,60 @@ class TestPIDAlarm(unittest.TestCase):
 
         self.progress_error = {
             # CASE 1
-            self.application_id_0: {self.timestamp_1: -30.0, self.timestamp_2: -20.0,
+            self.application_id_0: {self.timestamp_1: -30.0,
+                                    self.timestamp_2: -20.0,
                                     self.timestamp_3: -15.0},
 
             # CASE 2
-            self.application_id_1: {self.timestamp_1: -30.0, self.timestamp_2: -40.0,
+            self.application_id_1: {self.timestamp_1: -30.0,
+                                    self.timestamp_2: -40.0,
                                     self.timestamp_3: -60.0},
 
             # CASE 3
-            self.application_id_2: {self.timestamp_1: 30.0, self.timestamp_2: 20.0,
+            self.application_id_2: {self.timestamp_1: 30.0,
+                                    self.timestamp_2: 20.0,
                                     self.timestamp_3: 15.0},
 
             # CASE 4
-            self.application_id_3: {self.timestamp_1: 30.0, self.timestamp_2: 40.0,
+            self.application_id_3: {self.timestamp_1: 30.0,
+                                    self.timestamp_2: 40.0,
                                     self.timestamp_3: 55.0},
 
             # CASE 5
-            self.application_id_4: {self.timestamp_1: 100.0, self.timestamp_2: 100.0,
+            self.application_id_4: {self.timestamp_1: 100.0,
+                                    self.timestamp_2: 100.0,
                                     self.timestamp_3: 100.0},
 
             # CASE 6
-            self.application_id_5: {self.timestamp_1: -100.0, self.timestamp_2: -100.0,
+            self.application_id_5: {self.timestamp_1: -100.0,
+                                    self.timestamp_2: -100.0,
                                     self.timestamp_3: -100.0},
 
             # CASE 7
-            self.application_id_6: {self.timestamp_1: -30.0, self.timestamp_2: 10.0,
+            self.application_id_6: {
+                                    self.timestamp_1: -30.0,
+                                    self.timestamp_2: 10.0,
                                     self.timestamp_3: 30.0},
 
             # CASE 8
-            self.application_id_7: {self.timestamp_1: -5.0, self.timestamp_2: -1.0,
+            self.application_id_7: {
+                                    self.timestamp_1: -5.0,
+                                    self.timestamp_2: -1.0,
                                     self.timestamp_3: 2.0},
 
             # CASE 9
-            self.application_id_8: {self.timestamp_1: -10.0, self.timestamp_2: -5.0,
-                                    self.timestamp_3: 20.0, self.timestamp_4: -5.0},
+            self.application_id_8: {
+                                    self.timestamp_1: -10.0,
+                                    self.timestamp_2: -5.0,
+                                    self.timestamp_3: 20.0,
+                                    self.timestamp_4: -5.0},
 
             # CASE 10
-            self.application_id_9: {self.timestamp_1: -10.0, self.timestamp_2: 0.0,
-                                    self.timestamp_3: 10.0, self.timestamp_4: 5.0}
+            self.application_id_9: {
+                                    self.timestamp_1: -10.0,
+                                    self.timestamp_2: 0.0,
+                                    self.timestamp_3: 10.0,
+                                    self.timestamp_4: 5.0}
         }
 
     def metrics(self, metric_name, options):
@@ -140,12 +159,14 @@ class TestPIDAlarm(unittest.TestCase):
         timestamp_to_use = self.timestamps.pop(0)
 
         if metric_name == PIDAlarm.ERROR_METRIC_NAME:
-            return timestamp_to_use, self.progress_error[application_id][timestamp_to_use]
+            return timestamp_to_use,\
+                self.progress_error[application_id][timestamp_to_use]
 
     '''
 
         CASE 1
-        The error is always negative and its absolute value decreases throughout the execution
+        The error is always negative and its absolute value
+        decreases throughout the execution
         The derivative component decreases the proportional effect
         Uses application_id_0 progress
 
@@ -191,8 +212,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 45
 
@@ -221,8 +243,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 25
 
@@ -251,8 +274,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 20
 
@@ -264,7 +288,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 2
 
-       The error is always negative and its absolute value increases throughout the execution
+       The error is always negative and its absolute value
+       increases throughout the execution
        The derivative component increases the proportional effect
        Uses application_id_1 progress
 
@@ -309,8 +334,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_1})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 45
 
@@ -339,8 +365,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_1})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 65
 
@@ -369,8 +396,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_1})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 90
 
@@ -382,7 +410,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 3
 
-       The error is always positive and its absolute value decreases throughout the execution
+       The error is always positive and its absolute value
+       decreases throughout the execution
        The derivative component decreases the proportional effect
        Uses application_id_2 progress
 
@@ -427,8 +456,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 45
 
@@ -457,8 +487,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 25
 
@@ -487,8 +518,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 20
 
@@ -500,7 +532,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 4
 
-       The error is always positive and its absolute value increases throughout the execution
+       The error is always positive and its absolute value
+       increases throughout the execution
        The derivative component increases the proportional effect
        Uses application_id_3 progress
 
@@ -545,8 +578,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_3})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 45
 
@@ -575,8 +609,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_3})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 65
 
@@ -605,8 +640,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_3})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 90
 
@@ -618,7 +654,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 5
 
-       The error value is set to force the use of the minimum possible cap value
+       The error value is set to force the use of the
+       minimum possible cap value
        Uses application_id_4 progress
 
     '''
@@ -659,8 +696,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_4})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.min_cap
 
@@ -687,8 +725,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_4})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.min_cap
 
@@ -700,7 +739,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 6
 
-       The error value is set to force the use of the maximum possible cap value
+       The error value is set to force the use of the
+       maximum possible cap value
        Uses application_id_5 progress
 
     '''
@@ -741,8 +781,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_5})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.max_cap
 
@@ -769,8 +810,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_5})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.max_cap
 
@@ -782,7 +824,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 7
 
-       The error is negative in the first call and positive in the following calls.
+       The error is negative in the first call and
+       positive in the following calls.
        Uses application_id_6 progress
 
     '''
@@ -824,8 +867,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_6})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 45
 
@@ -854,8 +898,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_6})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 35
 
@@ -883,8 +928,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_6})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 55
 
@@ -896,7 +942,8 @@ class TestPIDAlarm(unittest.TestCase):
 
        CASE 8
 
-       The error is negative in the two first calls and positive in the following calls.
+       The error is negative in the two first calls and
+       positive in the following calls.
        Uses application_id_7 progress
 
     '''
@@ -939,8 +986,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_7})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_up + 7.5
 
@@ -969,8 +1017,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_7})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 0.5
 
@@ -998,8 +1047,9 @@ class TestPIDAlarm(unittest.TestCase):
                             {"application_id": self.application_id_7})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         new_cap = self.allocated_resources_scale_down - 4.5
 
@@ -1059,8 +1109,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_8})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Accumulated error is negative, therefore scale up
         new_cap = self.allocated_resources_scale_up + 15
@@ -1081,8 +1132,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_8})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Accumulated error is negative, therefore scale up
         new_cap = self.allocated_resources_scale_up + 22.5
@@ -1103,8 +1155,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_8})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Accumulated error is positive, therefore scale down
         new_cap = self.allocated_resources_scale_up - 7.5
@@ -1125,8 +1178,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_8})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Accumulated error is zero, therefore do not scale
         new_cap = self.allocated_resources_scale_up
@@ -1176,8 +1230,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_9})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         proportional_component = 15
         derivative_component = 0
@@ -1204,8 +1259,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_9})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         proportional_component = 0
         derivative_component = -5
@@ -1232,8 +1288,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_9})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         proportional_component = -15
         derivative_component = -5
@@ -1260,8 +1317,9 @@ class TestPIDAlarm(unittest.TestCase):
             assert_any_call(PIDAlarm.ERROR_METRIC_NAME,
                             {"application_id": self.application_id_9})
 
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         proportional_component = -7.5
         derivative_component = 2.5

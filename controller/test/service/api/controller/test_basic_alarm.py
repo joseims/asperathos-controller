@@ -49,7 +49,8 @@ class TestBasicAlarm(unittest.TestCase):
         self.bigsea_username = "username"
         self.bigsea_password = "password"
         self.authorization_url = "authorization_url"
-        # self.authorization_data = dict(authorization_url=self.authorization_url,
+        # self.authorization_data = dict(
+        #                                authorization_url=self.authorization_url,
         #                                bigsea_username=self.bigsea_username,
         #                                bigsea_password=self.bigsea_password)
 
@@ -69,7 +70,8 @@ class TestBasicAlarm(unittest.TestCase):
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
+        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,
+                                    # self.authorization_data,
                                     self.default_io_cap)
 
         self.alarm = BasicAlarm(
@@ -87,16 +89,6 @@ class TestBasicAlarm(unittest.TestCase):
 
     def metrics(self, metric_name, options):
         application_id = options["application_id"]
-
-        # normal cases
-        # application 0 -> job progress < time progress -> scale up
-        # application 1 -> job progress = time progress -> do nothing
-        # application 2 -> job progress > time progress -> scale down
-
-        # rounding cases
-        # application 3 -> job progress < time progress -> scale up depends on rounding
-        # application 4 -> job progress > time progress -> scale down depends
-        # on rounding
 
         job_progress = {
             self.application_id_0: 30.0,
@@ -154,7 +146,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_2})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_2})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_2})
@@ -183,7 +176,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_0})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_0})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_0})
@@ -212,7 +206,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_1})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_1})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_1})
@@ -252,7 +247,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_3})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_3})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_3})
@@ -289,7 +285,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_4})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_4})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_4})
@@ -330,7 +327,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_3})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_3})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_3})
@@ -364,7 +362,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_4})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_4})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_4})
@@ -398,7 +397,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_0})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_0})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_0})
@@ -428,7 +428,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_0})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_0})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_0})
@@ -442,7 +443,8 @@ class TestBasicAlarm(unittest.TestCase):
     def test_alarm_metrics_with_different_timestamps(self):
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metrics_different_timestamps
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metrics_different_timestamps
 
         self.actuator.adjust_resources = MagicMock(return_value=None)
         self.actuator.get_allocated_resources = MagicMock(
@@ -453,7 +455,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_2})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_2})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_2})
@@ -473,7 +476,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metrics_different_timestamps
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metrics_different_timestamps
 
         self.actuator.adjust_resources = MagicMock(return_value=None)
         self.actuator.get_allocated_resources = MagicMock(
@@ -484,7 +488,8 @@ class TestBasicAlarm(unittest.TestCase):
 
         # The method tries to get the metrics correctly
         self.metric_source.get_most_recent_value.assert_any_call(
-            BasicAlarm.PROGRESS_METRIC_NAME, {"application_id": self.application_id_2})
+            BasicAlarm.PROGRESS_METRIC_NAME,
+            {"application_id": self.application_id_2})
         self.metric_source.get_most_recent_value.assert_any_call(
             BasicAlarm.ELAPSED_TIME_METRIC_NAME, {
                 "application_id": self.application_id_2})

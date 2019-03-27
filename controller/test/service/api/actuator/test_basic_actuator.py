@@ -40,17 +40,18 @@ class TestBasicActuator(unittest.TestCase):
         self.bigsea_username = "username"
         self.bigsea_password = "password"
         self.authorization_url = "authorization_url"
-        # self.authorization_data = dict(authorization_url=self.authorization_url,
-        #                                bigsea_username=self.bigsea_username,
-        #                                bigsea_password=self.bigsea_password)
+        # self.authorization_data = dict(
+        # authorization_url=self.authorization_url,
+        # bigsea_username=self.bigsea_username,
+        # bigsea_password=self.bigsea_password)
 
         compute_nodes = []
         compute_nodes_key = "key"
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
-                                    self.io_cap)
+        self.actuator = KVMActuator(self.instance_locator,
+                                    self.remote_kvm, self.io_cap)
 
     def locator(self, vm_id):
         return {self.vm_id1: self.host_ip1, self.vm_id2: self.host_ip2}[vm_id]
@@ -123,7 +124,8 @@ class TestBasicActuator(unittest.TestCase):
         vm_data = {self.vm_id1: self.cap1, self.vm_id2: self.cap2}
 
         self.instance_locator.locate = MagicMock()
-        self.instance_locator.locate.side_effect = self.locator_instance_does_not_exist
+        self.instance_locator.locate.side_effect = \
+            self.locator_instance_does_not_exist
 
         self.remote_kvm.change_vcpu_quota = MagicMock(return_value=None)
         self.remote_kvm.change_io_quota = MagicMock(return_value=None)
@@ -177,7 +179,8 @@ class TestBasicActuator(unittest.TestCase):
         vms_ids = [self.vm_id2, self.vm_id1]
 
         self.instance_locator.locate = MagicMock()
-        self.instance_locator.locate.side_effect = self.locator_instance_does_not_exist
+        self.instance_locator.locate.side_effect = \
+            self.locator_instance_does_not_exist
         self.remote_kvm.get_allocated_resources = MagicMock(return_value=50)
 
         self.actuator.get_allocated_resources_to_cluster(vms_ids)
@@ -195,7 +198,8 @@ class TestBasicActuator(unittest.TestCase):
         vm_data = {self.vm_id1: self.cap1, self.vm_id2: self.cap2}
 
         self.instance_locator.locate = MagicMock()
-        self.instance_locator.locate.side_effect = self.locator_instance_does_not_exist
+        self.instance_locator.locate.side_effect = \
+            self.locator_instance_does_not_exist
 
         self.remote_kvm.change_vcpu_quota = MagicMock(return_value=None)
         self.actuator.authorizer.get_authorization = MagicMock(
@@ -209,7 +213,8 @@ class TestBasicActuator(unittest.TestCase):
         vms_ids = [self.vm_id2, self.vm_id1]
 
         self.instance_locator.locate = MagicMock()
-        self.instance_locator.locate.side_effect = self.locator_instance_does_not_exist
+        self.instance_locator.locate.side_effect = \
+            self.locator_instance_does_not_exist
         self.remote_kvm.get_allocated_resources = MagicMock(return_value=50)
         self.actuator.authorizer.get_authorization = MagicMock(
             return_value={'success': False})

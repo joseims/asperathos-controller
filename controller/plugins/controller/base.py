@@ -19,8 +19,10 @@ from abc import abstractmethod
 
 
 '''
-The Controller is the component responsible for, based on metrics of infrastructure and application
-health such as application progress and CPU usage, taking actions to ensure compliance with
+The Controller is the component responsible for, based on metrics of
+infrastructure and application
+health such as application progress and CPU usage,
+taking actions to ensure compliance with
 quality of service levels.
 '''
 

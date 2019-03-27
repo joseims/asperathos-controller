@@ -14,7 +14,6 @@
 # limitations under the License.
 
 
-
 class Forbidden(Exception):
     code = "FORBIDDEN"
     message = ("This action is forbidden")

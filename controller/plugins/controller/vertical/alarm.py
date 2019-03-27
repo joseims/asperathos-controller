@@ -58,7 +58,8 @@ class Vertical:
     def check_application_state(self):
         """
             Checks the application progress by getting progress metrics from a
-            metric source, checks if the metrics are new and tries to modify the
+            metric source, checks if
+            the metrics are new and tries to modify the
             amount of allocated resources if necessary.
         """
 
@@ -67,8 +68,8 @@ class Vertical:
             self.logger.log("Getting progress error")
             self.last_action = "getting progress error"
             # Get the progress error value and timestamp
-            progress_error_timestamp, progress_error = self._get_progress_error(
-                self.application_id)
+            progress_error_timestamp, progress_error = \
+                self._get_progress_error(self.application_id)
 
             self.logger.log(
                 "Progress error-[%s]-%f" %
@@ -148,8 +149,9 @@ class Vertical:
             application_id {string} -- The application identifier
 
         Returns:
-            [tuple] -- Returns a tuple containing the progress error timestamp and
-            the current value of the progress error
+            [tuple] -- Returns a tuple containing the progress error
+                       timestamp and
+                       the current value of the progress error
         """
 
         progress_error_measurement = self.metric_source.get_most_recent_value(
@@ -162,7 +164,8 @@ class Vertical:
         """Check if the currently measurements where already computed.
 
         Arguments:
-            progress_error_timestamp {string} -- Timestamp of the current progress error
+            progress_error_timestamp {string} -- Timestamp of the
+                                                 current progress error
 
         Returns:
             [boolean] -- 'true' if the measurements are new, 'false' otherwise
@@ -177,10 +180,11 @@ class Vertical:
         """Sets the CPU quota of the physical machine using a external API
 
         Arguments:
-            new_cpu_quota {int} -- The new value for the CPU quota of the machine
+            new_cpu_quota {int} -- The new value for the CPU quota
+                                   of the machine
         """
         try:
-            r = requests.post(
+            requests.post(
                 'http://%s:5000' %
                 (self.actuator.api_address),
                 data='{\"cpu_quota\":\"' +

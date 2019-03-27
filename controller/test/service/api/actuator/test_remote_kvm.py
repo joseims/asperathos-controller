@@ -43,15 +43,17 @@ class TestRemoteKVM(unittest.TestCase):
         self.remote_kvm.change_vcpu_quota(self.host_ip, self.vm_id, self.cap)
 
         command = "virsh schedinfo %s" \
-            " --set vcpu_quota=$(( %s * `virsh schedinfo %s | awk 'FNR == 3 {print $3}'`/100 ))" \
-            " > /dev/null" % (self.vm_id, self.cap, self.vm_id)
+                  " --set vcpu_quota=$(( %s * `virsh schedinfo %s" \
+                  " | awk \'FNR == 3 {print $3}\'`/100 ))" \
+                  " > /dev/null" % (self.vm_id, self.cap, self.vm_id)
 
         self.ssh_utils.run_command.assert_called_once_with(
             command, "root", self.host_ip, self.compute_nodes_key)
 
     def test_change_cpu_quota_negative_cap_value(self):
         self.assertRaises(Exception, self.remote_kvm.change_vcpu_quota,
-                          self.host_ip, self.vm_id, -10, self.compute_nodes_key)
+                          self.host_ip, self.vm_id,
+                          -10, self.compute_nodes_key)
 
     def test_change_cpu_quota_too_high_cap_value(self):
         self.assertRaises(
@@ -71,8 +73,9 @@ class TestRemoteKVM(unittest.TestCase):
         command_bs_quota = (self.cap * self.bs_reference) / 100
         command_set_io_quota = "virsh blkdeviotune %s" \
             " \"`virsh domblklist %s | awk 'FNR == 3 {print $1}'`\"" \
-            " --current --total_iops_sec %s --total_bytes_sec %s" % (self.vm_id, self.vm_id,
-                                                                     command_iops_quota, command_bs_quota)
+            " --current --total_iops_sec %s" \
+            " --total_bytes_sec %s" % (self.vm_id, self.vm_id,
+                                       command_iops_quota, command_bs_quota)
 
         self.ssh_utils.run_command = MagicMock(return_value=None)
 
@@ -83,7 +86,8 @@ class TestRemoteKVM(unittest.TestCase):
 
     def test_change_io_quota_negative_cap_value(self):
         self.assertRaises(Exception, self.remote_kvm.change_io_quota,
-                          self.host_ip, self.vm_id, -10, self.compute_nodes_key)
+                          self.host_ip, self.vm_id, -10,
+                          self.compute_nodes_key)
 
     def test_change_io_quota_too_high_cap_value(self):
         self.assertRaises(
@@ -103,7 +107,9 @@ class TestRemoteKVM(unittest.TestCase):
         self.assertEquals(result_cap, 56)
 
         command = "virsh schedinfo %s" \
-            " | awk '{if(NR==3){period=$3} if(NR==4){print 100*$3/period}}'" % (self.vm_id)
+            " | awk '{if(NR==3){period=$3}" \
+            " if(NR==4){print 100*$3/period}}'" % \
+            (self.vm_id)
         self.ssh_utils.run_and_get_result.assert_called_once_with(
             command, "root", self.host_ip, self.compute_nodes_key)
 
@@ -120,7 +126,8 @@ class TestRemoteKVM(unittest.TestCase):
         self.assertEquals(result_cap, 100)
 
         command = "virsh schedinfo %s" \
-            " | awk '{if(NR==3){period=$3} if(NR==4){print 100*$3/period}}'" % (self.vm_id)
+            " | awk '{if(NR==3){period=$3}" \
+            " if(NR==4){print 100*$3/period}}'" % (self.vm_id)
         self.ssh_utils.run_and_get_result.assert_called_once_with(
             command, "root", self.host_ip, self.compute_nodes_key)
 
@@ -147,7 +154,8 @@ class TestRemoteKVM(unittest.TestCase):
                 self.vm_id, self.vm_id)
 
         self.ssh_utils.run_and_get_result = MagicMock()
-        self.ssh_utils.run_and_get_result.side_effect = self.get_io_quota_ssh_values
+        self.ssh_utils.run_and_get_result.side_effect = \
+            self.get_io_quota_ssh_values
 
         quota = self.remote_kvm.get_io_quota(self.host_ip, self.vm_id)
 

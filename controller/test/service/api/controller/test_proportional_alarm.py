@@ -57,7 +57,8 @@ class TestProportionalAlarm(unittest.TestCase):
         self.bigsea_username = "username"
         self.bigsea_password = "password"
         # self.authorization_url = "authorization_url"
-        # self.authorization_data = dict(authorization_url=self.authorization_url,
+        # self.authorization_data = dict(
+        #                                authorization_url=self.authorization_url,
         #                                bigsea_username=self.bigsea_username,
         #                                bigsea_password=self.bigsea_password)
 
@@ -68,7 +69,8 @@ class TestProportionalAlarm(unittest.TestCase):
         self.instance_locator = InstanceLocator(
             SSHUtils({}), compute_nodes, compute_nodes_key)
         self.remote_kvm = RemoteKVM(SSHUtils({}), compute_nodes_key)
-        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,  # self.authorization_data,
+        self.actuator = KVMActuator(self.instance_locator, self.remote_kvm,
+                                    # self.authorization_data,
                                     self.default_io_cap)
 
         self.proportional_factor = 1
@@ -145,8 +147,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Remove resources
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
@@ -191,8 +194,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Remove resources
         new_cap = self.min_cap
@@ -236,8 +240,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Add resources
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
                              {"application_id": self.application_id_0})[1]
@@ -281,8 +286,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Add resources
         new_cap = self.max_cap
         # The method tries to adjust the amount of resources
@@ -358,8 +364,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Add resources
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
                              {"application_id": self.application_id_0})[1]
@@ -410,7 +417,8 @@ class TestProportionalAlarm(unittest.TestCase):
 
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metrics_different_timestamps
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metrics_different_timestamps
 
         self.actuator.adjust_resources = MagicMock(return_value=None)
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
@@ -424,8 +432,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Remove resources
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
                              {"application_id": self.application_id_2})[1]
@@ -440,7 +449,8 @@ class TestProportionalAlarm(unittest.TestCase):
 
         # Set up mocks
         self.metric_source.get_most_recent_value = MagicMock()
-        self.metric_source.get_most_recent_value.side_effect = self.metrics_different_timestamps
+        self.metric_source.get_most_recent_value\
+            .side_effect = self.metrics_different_timestamps
 
         self.actuator.adjust_resources = MagicMock(return_value=None)
         self.actuator.get_allocated_resources_to_cluster = MagicMock(
@@ -454,8 +464,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Remove resources
 
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
@@ -502,8 +513,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Remove resources
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
@@ -549,14 +561,16 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_2})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
 
         # Remove resources
         new_cap = self.min_cap
         # The method tries to adjust the amount of resources
-        self.actuator.adjust_resources.assert_called_once_with(
-            {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
+        self.actuator.adjust_resources\
+            .assert_called_once_with(
+                {self.instance_name_1: new_cap, self.instance_name_2: new_cap})
 
     def test_alarm_gets_metrics_and_scales_up_error_proportional_up_down(self):
         #
@@ -594,8 +608,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Add resources
         error = self.metrics(ProportionalAlarm.ERROR_METRIC_NAME,
                              {"application_id": self.application_id_0})[1]
@@ -640,8 +655,9 @@ class TestProportionalAlarm(unittest.TestCase):
                             {"application_id": self.application_id_0})
 
         # The method tries to get the amount of allocated resources
-        self.actuator.get_allocated_resources_to_cluster.assert_called_once_with(
-            self.instances)
+        self.actuator.get_allocated_resources_to_cluster\
+            .assert_called_once_with(
+                self.instances)
         # Add resources
         new_cap = self.max_cap
         # The method tries to adjust the amount of resources

@@ -54,7 +54,8 @@ class KubeJobs:
     def check_application_state(self):
         """
             Checks the application progress by getting progress metrics from a
-            metric source, checks if the metrics are new and tries to modify the
+            metric source, checks if the metrics are new
+            and tries to modify the
             amount of allocated resources if necessary.
         """
 
@@ -63,8 +64,8 @@ class KubeJobs:
             self.logger.log("Getting progress error")
             self.last_action = "getting progress error"
             # Get the progress error value and timestamp
-            progress_error_timestamp, progress_error = self._get_progress_error(
-                self.application_id)
+            progress_error_timestamp, progress_error = \
+                self._get_progress_error(self.application_id)
 
             self.logger.log(
                 "Progress error-[%s]-%f" %

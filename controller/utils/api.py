@@ -20,7 +20,7 @@ from werkzeug import datastructures
 
 from controller.exceptions import api as ex
 from controller.utils import serializer as u_serializer
-from controller.utils.logger import *
+from controller.utils.logger import Log
 
 
 LOG = Log("UtilsAPI", "utilsapi.log")

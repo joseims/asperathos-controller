@@ -29,7 +29,8 @@ class ExternalApi:
         self.api_address = self.get_api_address()
 
     def get_api_address(self):
-        """Get the address of the external API (i.e One of the nodes of the k8s cluster)
+        """Get the address of the external API
+        (i.e One of the nodes of the k8s cluster)
 
         Arguments:
             None

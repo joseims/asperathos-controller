@@ -49,7 +49,7 @@ class BasicAlarm:
 
     def get_job_progress(self, application_id):
         job_progress_measurement = self.metric_source.get_most_recent_value(
-            Basic_Alarm.PROGRESS_METRIC_NAME,
+            BasicAlarm.PROGRESS_METRIC_NAME,
             {"application_id": application_id})
 
         job_progress_timestamp = job_progress_measurement[0]
@@ -60,7 +60,7 @@ class BasicAlarm:
 
     def get_time_progress(self, application_id):
         time_progress_measurement = self.metric_source.get_most_recent_value(
-            Basic_Alarm.ELAPSED_TIME_METRIC_NAME,
+            BasicAlarm.ELAPSED_TIME_METRIC_NAME,
             {"application_id": application_id})
 
         time_progress_timestamp = time_progress_measurement[0]
